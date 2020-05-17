@@ -10,9 +10,8 @@ func twoSum(nums []int, target int) []int {
 	numsMap := make(map[int]int, l)
 	for i := 0; i < l; i++ {
 		if v, ok := numsMap[target - nums[i]]; ok {
-			if i < v {
-				return []int{i, v}
-			} else {
+			// if v != i, v < i will be true, cause v already in the map
+			if v < i {
 				return []int{v, i}
 			}
 		}
