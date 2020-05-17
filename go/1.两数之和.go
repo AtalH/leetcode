@@ -7,16 +7,16 @@
 // @lc code=start
 func twoSum(nums []int, target int) []int {
 	l := len(nums)
-	fastIndex := 1
-	for slowIndex := 0; slowIndex < l; {
-		if nums[slowIndex] + nums[fastIndex] == target {
-			return []int{slowIndex, fastIndex}
+	numsMap := make(map[int]int, l)
+	for i := 0; i < l; i++ {
+		if v, ok := numsMap[target - nums[i]]; ok {
+			if i < v {
+				return []int{i, v}
+			} else {
+				return []int{v, i}
+			}
 		}
-		fastIndex++
-		if fastIndex == l {
-			slowIndex++
-			fastIndex = slowIndex + 1
-		}
+		numsMap[nums[i]] = i
 	}
 	panic("no target match")
 }
