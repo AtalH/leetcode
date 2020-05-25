@@ -6,10 +6,10 @@
 
 // @lc code=start
 class MyCircularDeque {
-    Node head;
-    Node tail;
-    int maxSize;
-    int curSize = 0;
+    private Node head;
+    private Node tail;
+    private int maxSize;
+    private int curSize = 0;
 
     /** Initialize your data structure here. Set the size of the deque to be k. */
     public MyCircularDeque(int k) {
