@@ -18,24 +18,14 @@ class Solution {
         } else if (slen != tlen) {
             return false;
         }
-        Map<Character, Integer> countMap = new HashMap<>();
-        char[] sArray = s.toCharArray();
-        char[] tAarray = t.toCharArray();
+        // simple hash table
+        int[] countMap = new int[26];
         for (int i = 0; i < slen; i++) {
-            Integer count = countMap.get(sArray[i]);
-            if (count == null) {
-                count = 0;
-            }
-            countMap.put(sArray[i], ++count);
-
-            count = countMap.get(tAarray[i]);
-            if (count == null) {
-                count = 0;
-            }
-            countMap.put(tAarray[i], --count);
+            countMap[s.charAt(i) - 'a']++;
+            countMap[t.charAt(i) - 'a']--;
         }
-        for (int i : countMap.values()) {
-            if (i != 0) {
+        for (int count : countMap) {
+            if (count != 0) {
                 return false;
             }
         }
