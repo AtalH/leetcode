@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"regexp"
+	"strings"
 )
 
 /*
@@ -10,8 +10,15 @@ import (
  */
 
 func replaceSpace(s string) string {
-	space := regexp.MustCompile(" ")
-	return space.ReplaceAllString(s, "%20")
+	result := make([]string, 0, len(s)*2)
+	for _, v := range []byte(s) {
+		if v == ' ' {
+			result = append(result, "%20")
+		} else {
+			result = append(result, string(v))
+		}
+	}
+	return strings.Join(result, "")
 }
 
 func main() {
