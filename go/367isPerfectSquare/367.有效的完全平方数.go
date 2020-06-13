@@ -11,13 +11,14 @@ func isPerfectSquare(num int) bool {
 	if num < 0 {
 		return false
 	} else if num <= 1 {
+		// 0 & 1
 		return true
 	}
 	// s = n*n --> n < s/2 + 1
 	left, right := 0, num/2 + 1
 	for left <= right {
 		mid := (left + right) / 2
-		s := mid * mid
+		s := mid * mid // 注意 s 溢出问题
 		if s == num {
 			return true
 		} else if (s > num) {
