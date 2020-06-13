@@ -7,27 +7,14 @@
 // @lc code=start
 func isPerfectSquare(num int) bool {
 	// 完全平方数是指 s = n*n, n 是整数
-	// 解法1. 使用二分查找法
-	if num < 0 {
-		return false
-	} else if num <= 1 {
-		// 0 & 1
-		return true
+	// 解法1. 二分查找，时间复杂度 O(log n)
+	// 解法2. 利用奇数数列和公式 1 + 3 + 5 + ... + (2N−1) = n*n , 时间复杂度 O(sqrt(N))
+	odd := 1
+	for num > 0 {
+		num -= odd
+		odd += 2
 	}
-	// s = n*n --> n < s/2 + 1
-	left, right := 0, num/2 + 1
-	for left <= right {
-		mid := (left + right) / 2
-		s := mid * mid // 注意 s 溢出问题
-		if s == num {
-			return true
-		} else if (s > num) {
-			right = mid - 1
-		} else {
-			left = mid + 1
-		}
-	}
-	return false
+	return num == 0
 }
 // @lc code=end
 
