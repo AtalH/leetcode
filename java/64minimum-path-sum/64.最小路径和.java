@@ -12,7 +12,7 @@ class Solution {
             for (int j = grid[i].length-1; j >= 0; j--) {
                 // dp 存储着原来一行的 minPath 结果
                 // dp[j+1] 已经在上一个循环中更新为本行的右边一格的结果
-                // dp[j] 未计算前就是上一行下方一个的结果，计算后就是当前行了
+                // dp[j] 未计算前就是下方一格的结果，计算后就是当前行了
                 if(i < grid.length-1 && j < grid[i].length-1) {
                     dp[j] = grid[i][j] + Math.min(dp[j], dp[j+1]);
                 } else if (i == grid.length-1 && j < grid[i].length-1) {
