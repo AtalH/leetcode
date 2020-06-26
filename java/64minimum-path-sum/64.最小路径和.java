@@ -7,21 +7,24 @@
 // @lc code=start
 class Solution {
     public int minPathSum(int[][] grid) {
-        int[][] dp = new int[grid.length][grid[0].length];
+        int[] dp = new int[grid[0].length];
         for (int i = grid.length-1; i >= 0; i--) {
             for (int j = grid[i].length-1; j >= 0; j--) {
+                // dp 存储着原来一行的 minPath 结果
+                // dp[j+1] 已经在上一个循环中更新为本行的右边一格的结果
+                // dp[j] 未计算前就是上一行下方一个的结果，计算后就是当前行了
                 if(i < grid.length-1 && j < grid[i].length-1) {
-                    dp[i][j] = grid[i][j] + Math.min(dp[i][j+1], dp[i+1][j]);
+                    dp[j] = grid[i][j] + Math.min(dp[j], dp[j+1]);
                 } else if (i == grid.length-1 && j < grid[i].length-1) {
-                    dp[i][j] = grid[i][j] + dp[i][j+1];
+                    dp[j] = grid[i][j] + dp[j+1];
                 } else if(i < grid.length-1 && j == grid[i].length-1) {
-                    dp[i][j] = grid[i][j] + dp[i+1][j];
+                    dp[j] = grid[i][j] + dp[j];
                 } else {
-                    dp[i][j] = grid[i][j];
+                    dp[j] = grid[i][j];
                 }
             }
         }
-        return dp[0][0];
+        return dp[0];
     }
 }
 // @lc code=end
