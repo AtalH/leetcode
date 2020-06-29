@@ -7,29 +7,24 @@
 // @lc code=start
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length;
-        if (m == 0) {
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0
+                || matrix[0][0] > target || matrix[matrix.length-1][matrix[0].length-1] < target) {
             return false;
         }
-        int n = matrix[0].length;
-        if (n == 0) {
-            return false;
-        }
-        if (matrix[0][0] == target || matrix[m - 1][n - 1] == target) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        if(matrix[0][0] == target || matrix[n - 1][m - 1] == target) {
             return true;
-        } else if (matrix[0][0] > target || matrix[m - 1][n - 1] < target) {
-            return false;
         }
         int start = 0;
         int end = n * m -1;
-        while (start <= end) {
-            int mid = start + (end - start) / 2;
-            int x = mid / n;
-            int y = mid % n;
-            if (matrix[x][y] == target) {
+        while(start <= end) {
+            int mid = start + (end - start)/2;
+            int midPoint = matrix[mid / m][mid % m];
+            if(midPoint == target) {
                 return true;
-            } else if (matrix[x][y] > target) {
-                end = mid - 1;
+            } else if(midPoint > target) {
+                end = mid -1;
             } else {
                 start = mid + 1;
             }
