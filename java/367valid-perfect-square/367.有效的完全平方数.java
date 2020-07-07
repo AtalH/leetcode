@@ -13,21 +13,11 @@ class Solution {
         if (num == 1) {
             return true;
         }
-        // 二分法必须使用 long 类型，否则 mid 平方溢出
-        long left = 2;
-        long right = num / 2;
-        while (left <= right) {
-            long mid = left + (right - left) / 2;
-            long sqrt = mid * mid;
-            if (sqrt == num) {
-                return true;
-            } else if (sqrt > num) {
-                right = mid - 1;
-            } else {
-                left = mid + 1;
-            }
+        long x = num / 2;
+        while (x * x > num) {
+            x = (x + num / x) / 2;
         }
-        return false;
+        return x * x == num;
     }
 }
 // @lc code=end
