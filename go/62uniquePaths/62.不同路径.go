@@ -9,22 +9,22 @@ func uniquePaths(m int, n int) int {
 	if m < 1 || n < 1 {
 		return 0
 	}
-	return dfs(1, 1, m, n, 0)
-}
-
-// time exceeded
-func dfs(x int, y int, m int, n int, result int) int {
-	if x == m && y == n {
-		result++
-		return result
+	dp := make([][]int, n)
+	for i, _ := range dp {
+		dp[i] = make([]int, m)
 	}
-	if x < m {
-		result = dfs(x+1, y, m, n, result)
+	for i := 0; i < n; i++ {
+		dp[i][0] = 1
 	}
-	if y < n {
-		result = dfs(x, y+1, m, n, result)
+	for j := 0; j < m; j++ {
+		dp[0][j] = 1
 	}
-	return result
+	for i := 1; i < n; i++ {
+		for j := 1; j < m; j++ {
+			dp[i][j] = dp[i-1][j] + dp[i][j-1]
+		}
+	}
+	return dp[n - 1][m - 1]
 }
 // @lc code=end
 
