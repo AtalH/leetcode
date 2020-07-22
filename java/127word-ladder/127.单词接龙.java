@@ -1,9 +1,6 @@
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -16,66 +13,45 @@ import java.util.Set;
 // @lc code=start
 class Solution {
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> wordSet = new HashSet<>(wordList);
-        if (!wordSet.contains(endWord)) {
+        if(beginWord == null || endWord == null || wordList == null || wordList.isEmpty()) {
             return 0;
         }
-        // can not go back to begin
-        wordSet.remove(beginWord);
-        Map<String, List<String>> wordMap = new HashMap<>();
-        for (String word : wordSet) {
-            char[] chars = word.toCharArray();
-            for (int i = 0; i < chars.length; i++) {
-                char temp = chars[i];
-                chars[i] = '*';
-                String key = String.valueOf(chars);
-                List<String> words = wordMap.computeIfAbsent(key, k -> new ArrayList<>());
-                words.add(word);
-                chars[i] = temp;
-            }
+        Set<String> wordSet = new HashSet<>(wordList);
+        if(!wordSet.contains(endWord)){
+            return 0;
         }
-        // doubleEndBfs
-        Set<String> visitedSmaller = new HashSet<>();
-        Set<String> visitedBigger = new HashSet<>();
-        visitedSmaller.add(beginWord);
-        visitedBigger.add(endWord);
-        Queue<String> qSmaller = new LinkedList<>();
-        Queue<String> qBigger = new LinkedList<>();
-        qSmaller.offer(beginWord);
-        qBigger.offer(endWord);
+        Set<String> visited = new HashSet<>();
+        Set<String> fronSet = new HashSet<>();
+        Set<String> endSet = new HashSet<>();
+        fronSet.add(beginWord);
+        endSet.add(endWord);
         int result = 1;
-        while (!qSmaller.isEmpty() && !qBigger.isEmpty()) {
-            if (qSmaller.size() > qBigger.size()) {
-                Set<String> visitedTemp = visitedSmaller;
-                visitedSmaller = visitedBigger;
-                visitedBigger = visitedTemp;
-                Queue<String> qTemp = qSmaller;
-                qSmaller = qBigger;
-                qBigger = qTemp;
-
+        while(!fronSet.isEmpty() && !endSet.isEmpty()) {
+            if(endSet.size() < fronSet.size()) {
+                Set<String> temp = fronSet;
+                fronSet = endSet;
+                endSet = temp;
             }
-            Queue<String> qNext = new LinkedList<>();
-            while (!qSmaller.isEmpty()) {
-                String word = qSmaller.poll();
+            Set<String> nextSet = new HashSet<>();
+            for (String word : fronSet) {
                 char[] chars = word.toCharArray();
-                for (int j = 0; j < word.length(); j++) {
-                    char temp = chars[j];
-                    chars[j] = '*';
-                    String key = String.valueOf(chars);
-                    chars[j] = temp;
-                    List<String> words = wordMap.getOrDefault(key, new ArrayList<>());
-                    for (String s : words) {
-                        if (visitedBigger.contains(s)) {
+                for (int i = 0; i < chars.length; i++) {
+                    char t = chars[i];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        chars[i] = c;
+                        String newWord = String.valueOf(chars);
+                        if(endSet.contains(newWord)) {
                             return result + 1;
-                        }
-                        if (!visitedSmaller.contains(s)) {
-                            visitedSmaller.add(s);
-                            qNext.add(s);
+                        } 
+                        if(!visited.contains(newWord) && wordSet.contains(newWord)){
+                            visited.add(newWord);
+                            nextSet.add(newWord);
                         }
                     }
+                    chars[i] = t;
                 }
             }
-            qSmaller.addAll(qNext);
+            fronSet = nextSet;
             result++;
         }
         return 0;
