@@ -6,17 +6,21 @@
 
 // @lc code=start
 func maxProfit(prices []int) int {
-	if len(prices) == 0 {
-		return 0;
-	}
+	n := len(prices)
+    if(n <= 1) {
+        return 0;
+    }
 	// 将所有股价上升期的价格差累加即可
-	maxProfit := 0
-	for i := 1; i < len(prices); i++ {
-		if (prices[i] > prices[i - 1]) {
-			maxProfit += prices[i] - prices[i - 1]
-		}
-	}
-	return maxProfit
+    income := 0
+    for l, r := 1, n - 1; l <= r; l, r = l+1, r-1 {
+        if prices[l] > prices[l-1] {
+            income += prices[l] - prices[l-1]
+        }
+        if prices[r] > prices[r-1] && l != r{
+            income += prices[r] - prices[r-1]
+        }
+    }
+    return income
 }
 // @lc code=end
 
