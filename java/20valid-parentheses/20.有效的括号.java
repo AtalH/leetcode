@@ -1,3 +1,6 @@
+import java.util.Map;
+import java.util.Stack;
+
 /*
  * @lc app=leetcode.cn id=20 lang=java
  *
@@ -7,41 +10,34 @@
 // @lc code=start
 class Solution {
     public boolean isValid(String s) {
-        if (s == null || s.isEmpty()) {
+        // '('，')'，'{'，'}'，'['，']'
+        if(s == null || s.isEmpty()) {
             return true;
         }
         int len = s.length();
-        if(len % 2 == 1) {
+        if((len & 1) == 1) {
             return false;
         }
-        char[] chars = s.toCharArray();
-        int stackCapacity = len >> 1;
-        char[] stack = new char[stackCapacity];
-        int top = 0;
-        for (char c : chars) {
-            if(c == '(' || c == '{' || c == '[') {
-                if(top < stackCapacity) {
-                    stack[top++] = c;
-                } else {
-                    return false;
-                }
-            } else if(c == ')') {
-                if(top == 0 || stack[--top] != '(') {
-                    return false;
-                }
-            } else if(c == '}') {
-                if(top == 0 || stack[--top] != '{') {
-                    return false;
-                }
-            } else if(c == ']') {
-                if (top == 0 || stack[--top] != '[') {
-                    return false;
-                }
-            } else {
+        char[] stack = new char[len/2+1];
+        int i = 0;
+        for (int j = 0; j < len; j++) {
+            char c = s.charAt(j);
+            if(c == '(' || c == '[' || c == '{') {
+                stack[i++] = c;
+                continue;
+            }
+            if(i == 0 || i > (len-j)) {
                 return false;
             }
+            char sc = stack[--i];
+            if((sc == '(' && c == ')')
+            || (sc == '[' && c == ']')
+            || (sc == '{' && c == '}')) {
+                continue;
+            }
+            return false;
         }
-        return top == 0;
+        return i==0;
     }
 }
 // @lc code=end
